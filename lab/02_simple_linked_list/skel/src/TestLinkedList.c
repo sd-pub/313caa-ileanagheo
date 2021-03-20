@@ -5,8 +5,7 @@
 
 #define MAX_STRING_SIZE 64
 
-int
-main()
+int main()
 {
     linked_list_t* linkedList;
     int is_int = 0;
@@ -35,7 +34,7 @@ main()
         }
         if (strcmp(command, "remove") == 0) {
             scanf("%ld", &pos);
-            ll_remove_nth_node(linkedList, pos);
+            free(ll_remove_nth_node(linkedList, pos));
         }
         if (strcmp(command, "print") == 0) {
             if (is_int == 1) {
@@ -48,6 +47,9 @@ main()
         if (strcmp(command, "free") == 0) {
             ll_free(&linkedList);
             break;
+        }
+        if (strcmp(command, "ex2") == 0) {
+            ll_ex2(linkedList);
         }
     }
     return 0;
