@@ -362,7 +362,8 @@ doubly_linked_list_t*
 Ex312CAb (doubly_linked_list_t* A, doubly_linked_list_t* B)
 {
 	unsigned int i = 0;
-	int suma = 0;
+	int suma;
+	suma = 0;
     dll_node_t *curr1, *curr2;
     doubly_linked_list_t *C;
     C = dll_create(sizeof(int));
@@ -374,7 +375,7 @@ Ex312CAb (doubly_linked_list_t* A, doubly_linked_list_t* B)
     		suma = *((int *)curr1->data) + *((int *)curr2->data);
     		curr1 = curr1->next;
     		curr2 = curr2->next;
-    		dll_add_nth_node(C, i, suma);
+    		dll_add_nth_node(C, i, &suma);
     		i++;
     	}
     	while (i < A->size) {
@@ -385,16 +386,22 @@ Ex312CAb (doubly_linked_list_t* A, doubly_linked_list_t* B)
 
     } else {
 		while (i < A->size) {
+			printf("%s\n", "inceput while");
     		suma = *((int *)curr1->data) + *((int *)curr2->data);
     		curr1 = curr1->next;
     		curr2 = curr2->next;
-    		dll_add_nth_node(C, i, suma);
+    		printf("%s\n", "inainte de add");
+    		dll_add_nth_node(C, i, &suma);
     		i++;
+    		printf("%s\n", "final while");
     	}
     	while (i < B->size) {
+    		printf("%s\n", "inceput while 2");
     		dll_add_nth_node(C, i, curr2->data);
     		curr2 = curr2->next;
     		i++;
+    		printf("%s\n", "final while 2");
+
     	}
     }
 	return C;
