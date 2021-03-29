@@ -386,21 +386,17 @@ Ex312CAb (doubly_linked_list_t* A, doubly_linked_list_t* B)
 
     } else {
 		while (i < A->size) {
-			printf("%s\n", "inceput while");
     		suma = *((int *)curr1->data) + *((int *)curr2->data);
     		curr1 = curr1->next;
     		curr2 = curr2->next;
     		printf("%s\n", "inainte de add");
     		dll_add_nth_node(C, i, &suma);
     		i++;
-    		printf("%s\n", "final while");
     	}
     	while (i < B->size) {
-    		printf("%s\n", "inceput while 2");
     		dll_add_nth_node(C, i, curr2->data);
     		curr2 = curr2->next;
     		i++;
-    		printf("%s\n", "final while 2");
 
     	}
     }
