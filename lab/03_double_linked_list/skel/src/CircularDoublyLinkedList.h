@@ -47,8 +47,14 @@ void
 dll_print_string_list(doubly_linked_list_t* list);
 
 void
-dll_print_ints_left_circular(dll_node_t* start);
+dll_print_ints_left_circular(doubly_linked_list_t* list, dll_node_t* start);
 
 void
-dll_print_ints_right_circular(dll_node_t* start);
+dll_print_ints_right_circular(doubly_linked_list_t* list, dll_node_t* start);
+
+doubly_linked_list_t*
+Ex313CAa (doubly_linked_list_t* list1, doubly_linked_list_t* list2);
+
+doubly_linked_list_t*
+Ex312CAb (doubly_linked_list_t* A, doubly_linked_list_t* B);
 #endif /* __CIRCULAR_DOUBLY_LINKED_LIST_H_*/
