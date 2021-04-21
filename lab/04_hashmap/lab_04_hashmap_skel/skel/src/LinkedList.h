@@ -1,16 +1,14 @@
-#ifndef LINKED_LIST_H_
-#define LINKED_LIST_H_
+#ifndef __LINKED_LIST_H_
+#define __LINKED_LIST_H_
 
 typedef struct ll_node_t ll_node_t;
-struct ll_node_t
-{
+struct ll_node_t {
     void* data;
     ll_node_t* next;
 };
 
 typedef struct linked_list_t linked_list_t;
-struct linked_list_t
-{
+struct linked_list_t {
     ll_node_t* head;
     unsigned int data_size;
     unsigned int size;
@@ -37,4 +35,4 @@ ll_print_int(linked_list_t* list);
 void
 ll_print_string(linked_list_t* list);
 
-#endif  /* LINKED_LIST_H_ */
+#endif /* __LINKED_LIST_H_ */

@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-Wall -Wextra -pedantic -ansi
+CFLAGS=-Wall -Wextra -pedantic -ansi -lm
 DEBUG=-g -ggdb -O0 -march=native
 
 ELF=circles

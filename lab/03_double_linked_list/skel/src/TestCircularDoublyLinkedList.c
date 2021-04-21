@@ -6,7 +6,7 @@
 #define MAX_STRING_SIZE 64
 
 int main() {
-    doubly_linked_list_t *doublyLinkedList;
+    doubly_linked_list_t *doublyLinkedList, *l1, *l2;
     int is_int = 0;
     int is_string = 0;
     while(1) {
@@ -48,6 +48,43 @@ int main() {
             dll_free(&doublyLinkedList);
             break;
         }
+
+        /* Verificare pentru ex 313CAa si 312CAb */
+        if(strcmp(command, "create_l1") == 0){
+            l1 = dll_create(sizeof(int));
+        }
+        if(strcmp(command, "create_l2") == 0){
+            l2 = dll_create(sizeof(int));
+        }
+        if(strcmp(command, "add_l1") == 0){
+            scanf("%ld", &pos);
+            scanf("%s", added_elem);
+            nr = strtol(added_elem, &end_ptr, 10);
+            if(nr != 0) {
+                dll_add_nth_node(l1, pos, &nr);
+            }
+            else{
+                dll_add_nth_node(l1, pos, end_ptr);
+            }
+        }
+        if(strcmp(command, "add_l2") == 0){
+            scanf("%ld", &pos);
+            scanf("%s", added_elem);
+            nr = strtol(added_elem, &end_ptr, 10);
+            if(nr != 0) {
+                dll_add_nth_node(l2, pos, &nr);
+            }
+            else{
+                dll_add_nth_node(l2, pos, end_ptr);
+            }
+        }
+        if(strcmp(command, "313CAa") == 0){
+            dll_print_int_list(Ex313CAa(l1, l2));
+        }
+        if(strcmp(command, "312CAb") == 0){
+            dll_print_int_list(Ex312CAb(l1, l2));
+        }
+        
     }
     return 0;
 }

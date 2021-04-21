@@ -5,45 +5,19 @@
 #include "LinkedList.h"
 #include "utils.h"
 
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-
-linked_list_t*
+linked_list_t *
 ll_create(unsigned int data_size)
 {
-    /* TODO */
-    linked_list_t* ll = calloc(1, sizeof(*ll));
-    DIE(!ll, "calloc list");
+    linked_list_t* ll;
 
+    ll = malloc(sizeof(*ll));
+    DIE(ll == NULL, "linked_list malloc");
+
+    ll->head = NULL;
     ll->data_size = data_size;
+    ll->size = 0;
 
     return ll;
-}
-
-static ll_node_t* get_nth_node(linked_list_t* list, unsigned int n)
-{
-    unsigned int len = list->size - 1;
-    unsigned int i;
-    ll_node_t* node = list->head;
-
-    n = MIN(n, len);
-
-    for (i = 0; i < n; ++i)
-        node = node->next;
-
-    return node;
-}
-
-static ll_node_t* create_node(const void* new_data, unsigned int data_size)
-{
-    ll_node_t* node = calloc(1, sizeof(*node));
-    DIE(!node, "calloc node");
-
-    node->data = malloc(data_size);
-    DIE(!node->data, "malloc data");
-
-    memcpy(node->data, new_data, data_size);
-
-    return node;
 }
 
 /*
@@ -56,24 +30,43 @@ static ll_node_t* create_node(const void* new_data, unsigned int data_size)
 void
 ll_add_nth_node(linked_list_t* list, unsigned int n, const void* new_data)
 {
-    /* TODO */
-    ll_node_t *new_node, *prev_node;
+    ll_node_t *prev, *curr;
+    ll_node_t* new_node;
 
-    if (!list)
+    if (list == NULL) {
         return;
-
-    new_node = create_node(new_data, list->data_size);
-
-    if (!n || !list->size) {
-        new_node->next = list->head;
-        list->head = new_node;
-    } else {
-        prev_node = get_nth_node(list, n - 1);
-        new_node->next = prev_node->next;
-        prev_node->next = new_node;
     }
 
-    ++list->size;
+    /* n >= list->size inseamna adaugarea unui nou nod la finalul listei. */
+    if (n > list->size) {
+        n = list->size;
+    } else if (n < 0) {
+        return;
+    }
+
+    curr = list->head;
+    prev = NULL;
+    while (n > 0) {
+        prev = curr;
+        curr = curr->next;
+        --n;
+    }
+
+    new_node = malloc(sizeof(*new_node));
+    DIE(new_node == NULL, "new_node malloc");
+    new_node->data = malloc(list->data_size);
+    DIE(new_node->data == NULL, "new_node->data malloc");
+    memcpy(new_node->data, new_data, list->data_size);
+
+    new_node->next = curr;
+    if (prev == NULL) {
+        /* Adica n == 0. */
+        list->head = new_node;
+    } else {
+        prev->next = new_node;
+    }
+
+    list->size++;
 }
 
 /*
@@ -84,29 +77,42 @@ ll_add_nth_node(linked_list_t* list, unsigned int n, const void* new_data)
  * nod proaspat eliminat din lista. Este responsabilitatea apelantului sa
  * elibereze memoria acestui nod.
  */
-ll_node_t*
+ll_node_t *
 ll_remove_nth_node(linked_list_t* list, unsigned int n)
 {
-    /* TODO */
-    ll_node_t *prev_node, *removed_node;
+    ll_node_t *prev, *curr;
 
-    if (!list || !list->size)
+    if (list == NULL) {
         return NULL;
-
-    if (!n) {
-        removed_node = list->head;
-        list->head = removed_node->next;
-        removed_node->next = NULL;
-    } else {
-        prev_node = get_nth_node(list, n - 1);
-        removed_node = prev_node->next;
-        prev_node->next = removed_node->next;
-        removed_node->next = NULL;
     }
 
-    --list->size;
+    if (list->head == NULL) { /* Lista este goala. */
+        return NULL;
+    }
 
-    return removed_node;
+    /* n >= list->size - 1 inseamna eliminarea nodului de la finalul listei. */
+    if (n > list->size - 1) {
+        n = list->size - 1;
+    }
+
+    curr = list->head;
+    prev = NULL;
+    while (n > 0) {
+        prev = curr;
+        curr = curr->next;
+        --n;
+    }
+
+    if (prev == NULL) {
+        /* Adica n == 0. */
+        list->head = curr->next;
+    } else {
+        prev->next = curr->next;
+    }
+
+    list->size--;
+
+    return curr;
 }
 
 /*
@@ -116,8 +122,11 @@ ll_remove_nth_node(linked_list_t* list, unsigned int n)
 unsigned int
 ll_get_size(linked_list_t* list)
 {
-    /* TODO */
-    return !list ? 0 : list->size;
+    if (list == NULL) {
+        return -1;
+    }
+
+    return list->size;
 }
 
 /*
@@ -129,19 +138,19 @@ ll_get_size(linked_list_t* list)
 void
 ll_free(linked_list_t** pp_list)
 {
-    /* TODO */
-    ll_node_t *node;
+    ll_node_t* currNode;
 
-    if (!pp_list || !*pp_list)
+    if (pp_list == NULL || *pp_list == NULL) {
         return;
-
-    while ((*pp_list)->size) {
-        node = ll_remove_nth_node(*pp_list, 0);
-        free(node->data);
-        free(node);
     }
 
-    free (*pp_list);
+    while (ll_get_size(*pp_list) > 0) {
+        currNode = ll_remove_nth_node(*pp_list, 0);
+        free(currNode->data);
+        free(currNode);
+    }
+
+    free(*pp_list);
     *pp_list = NULL;
 }
 
@@ -153,11 +162,18 @@ ll_free(linked_list_t** pp_list)
 void
 ll_print_int(linked_list_t* list)
 {
-    /* TODO */
-    ll_node_t *node = list->head;
+    ll_node_t* curr;
 
-    for (; node; node = node->next)
-        printf("%d ", *(int*)node->data);
+    if (list == NULL) {
+        return;
+    }
+
+    curr = list->head;
+    while (curr != NULL) {
+        printf("%d ", *((int*)curr->data));
+        curr = curr->next;
+    }
+
     printf("\n");
 }
 
@@ -169,10 +185,17 @@ ll_print_int(linked_list_t* list)
 void
 ll_print_string(linked_list_t* list)
 {
-    /* TODO */
-    ll_node_t *node = list->head;
+    ll_node_t* curr;
 
-    for (; node; node = node->next)
-        printf("%s ", (char*)node->data);
+    if (list == NULL) {
+        return;
+    }
+
+    curr = list->head;
+    while (curr != NULL) {
+        printf("%s ", (char*)curr->data);
+        curr = curr->next;
+    }
+
     printf("\n");
 }
