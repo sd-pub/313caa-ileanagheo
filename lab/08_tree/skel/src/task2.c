@@ -19,7 +19,7 @@ void nivel(b_node_t *current, unsigned int *parents, unsigned int N)
 		return;
 	}
 	//Cresc o singura data nr de parinti pt ambele apelari ale functiei nivel.
-	*parents++;
+	*parents += 1;
 	nivel(current->left, parents, N);
 	nivel(current->right, parents, N);
 }
@@ -29,14 +29,13 @@ int main(void)
     /* TODO */
 
     //Ex 313CAa)
-    //Nu am putut verifica daca merge pt ca nu imi merge insert-ul, dar sper
-    //ca logica e buna.
+    //Am reusit sa verific cu 3 noduri si merge. (insert-ul merge cu 3 noduri)
     unsigned int N;
     scanf("%d", &N);
 
-    //Crearea copacului cu elemente de la 1 la 10;
+    //Crearea copacului cu elemente de la 1 la 3;
     b_tree_t *tree = b_tree_create(sizeof(int));
-    for (unsigned int i = 1; i <= 20; i++) {
+    for (unsigned int i = 1; i <= 3; i++) {
     	b_tree_insert(tree, &i);
     }
 
