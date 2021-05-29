@@ -28,6 +28,12 @@ void
 ascending_nodes(Node* node, int* keys, int* num_keys)
 {
     // TODO
+    if (node != NULL) {
+        ascending_nodes(node->left, keys, num_keys);
+        keys[*num_keys] = *((int *) node->data);
+        (*num_keys)++;
+        ascending_nodes(node->right, keys, num_keys); 
+    }
 }
 int
 main()
